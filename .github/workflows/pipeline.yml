@@ -49,37 +49,37 @@ jobs:
           
           
           
-  upload:
-    needs: build
-    runs-on: ubuntu-latest
+  # upload:
+  #   needs: build
+  #   runs-on: ubuntu-latest
 
-    steps:    
+  #   steps:    
     
-    - uses: actions/checkout@v3
+  #   - uses: actions/checkout@v3
     
-    - uses: actions/cache@v3
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
+  #   - uses: actions/cache@v3
+  #     with:
+  #       path: ~/.m2/repository
+  #       key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+  #       restore-keys: |
+  #         ${{ runner.os }}-maven-
     
-    - uses: actions/download-artifact@master
-      with:
-        name: artifacts
+  #   - uses: actions/download-artifact@master
+  #     with:
+  #       name: artifacts
     
-    - name: Upload to Exchange
-      run: |
-        artifactName=$(ls *.jar | head -1)
-        mvn deploy \
-         -s .maven/settings.xml \
-         -Dmule.artifact=$artifactName \
+  #   - name: Upload to Exchange
+  #     run: |
+  #       artifactName=$(ls *.jar | head -1)
+  #       mvn deploy \
+  #        -s .maven/settings.xml \
+  #        -Dmule.artifact=$artifactName \
        
     
  
         
   deploy:
-    needs: upload
+    needs: build
     runs-on: ubuntu-latest
 
     steps:    
